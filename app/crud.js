@@ -10,7 +10,6 @@ define([
   "plugins/bootstrap-modal"
 ],
 function (app, Backbone) {
-  "use strict";
 
   var Crud = app.module();
 

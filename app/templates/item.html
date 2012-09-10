@@ -1,0 +1,29 @@
+<td><%=model.title%></td>
+<td class="span1">
+	<div class="btn-group">
+	  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+      	<%= model.status == '0' ? 'Not Watched' : '' %>
+	    <%= model.status === 1 ? 'Watched' : '' %>
+	    <%= model.status === 2 ? 'Want Watch' : '' %>
+	    <span class="caret"></span>
+	  </a>
+	  <ul class="dropdown-menu">
+	    <li><a id="btnStatusNotWatched" href="#" data-status="0">Not Watched</a></li>
+	    <li><a id="btnStatusWatched" href="#"  data-status="1">Watched</a></li>
+	    <li><a id="btnStatusWantWatched" href="#"  data-status="2">Want Watch</a></li>
+	  </ul>
+	</div>
+</td>
+<td class="span2">
+	<span class="rating">
+		<span class="star"></span>
+		<span class="star"></span>
+		<span class="star"></span>
+		<span class="star"></span>
+		<span class="star"></span>
+	</span>
+</td>
+<td class="span1 actionEdit">
+	<a href="#edit/<%=model.cod%>" class="edit btn btn-info btn-mini" title="edit"><i class="icon-pencil icon-white"></i></a>
+	<a href="#delete/<%=model.cod%>" class="delete btn btn-danger  btn-mini" title="delete"><i class="icon-trash icon-white"></i></a>
+</td>

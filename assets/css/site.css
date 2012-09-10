@@ -1,0 +1,45 @@
+.pull-center {
+  text-align: center !important;
+}
+
+.actionEdit{
+  text-align: center !important;
+  white-space: nowrap;
+}
+.actionEdit .edit {
+  margin-right: 4px;
+}
+.actionEdit .delete{
+    margin-left: 4px;
+}
+.actionEdit .delete i, .actionEdit .edit i{
+  font-size: 26px;
+}
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  font-size: 22px;
+}
+.rating span.star{
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+}
+.rating span.star:hover{
+  cursor: pointer;
+}
+.rating span.star:before{
+  content: "\f006";
+  padding-right: 2px;
+  color: #999999;
+}
+.rating span.star:hover:before,
+.rating span.star:hover ~ span.star:before{
+  content: "\f005";
+  color: #e3cf7a;
+}
+.rating span.starMark:before, .rating span.starMark ~ span.star:before{
+  content: "\f005";
+  color: #e3cf7a;
+}

@@ -50,7 +50,7 @@ function (app, Crud, Backbone) {
     editMovie: function (id) {
       var models = this._collection.where({cod: Number(id)});
       if (models.length > 0) {
-        models[0].trigger('edit', models[0]);
+        this._collection.trigger('edit', models[0]);
       }
     },
 

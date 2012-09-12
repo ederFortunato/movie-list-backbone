@@ -1,73 +1,61 @@
-describe("one tautology", function() {
-  it("is a tautology", function() {
-    expect(true).toBeTruthy();
-  });
+define(['../../../app/app', '../../../app/Crud'], function() {
 
-  describe("is awesome", function() {
-    it("is awesome", function() {
-      expect(1).toBe(1);
-    });
-  });
-});
+  var app = require("app"),
+    lastMovie,
+    _collection,
+    formView;
 
-describe("simple tests", function() {
-  it("increments", function() {
-    var mike = 0;
+  describe("Tests for Movie List Backbone", function() {
 
-    expect(mike++ === 0).toBeTruthy();
-    expect(mike === 1).toBeTruthy();
-  });
-
-  it("increments (improved)", function() {
-    var mike = 0;
-
-    expect(mike++).toBe(0);
-    expect(mike).toBe(1);
-  });
-});
-
-describe("setUp/tearDown", function() {
-  beforeEach(function() {
-    // console.log("Before");
-  });
-
-  afterEach(function() {
-    // console.log("After");
-  });
-
-  it("example", function() {
-    // console.log("During");
-  });
-
-  describe("setUp/tearDown", function() {
     beforeEach(function() {
-      // console.log("Before2");
+      _collection = app.router._collection;
+      formView = getView('form-view');
+
+      if(_collection.models.length > 0){
+        lastMovie = _collection.models[_collection.models.length-1];
+      }
+
+      //prevent change URL
+      app.router.navigate = function(){};
     });
 
-    afterEach(function() {
-      // console.log("After2");
+    it("Add Movie", function(){
+      var prevTotal = _collection.length;
+
+      formView.$el.find('#txtTitle').val('movie test');
+      formView.confirmSave();
+
+      expect(prevTotal + 1).toBe(_collection.length);
     });
 
-    it("example", function() {
-      // console.log("During Nested");
+    it("Edit Movie", function(){
+      var newName = 'movie 2',
+        oldName = lastMovie.get('title'),
+        model;
+
+      app.router.editMovie(lastMovie.get('cod'));
+      formView.$el.find('#txtTitle').val(newName);
+      formView.confirmSave();
+
+      model = _collection.where({cod: lastMovie.get('cod')})[0];
+
+      expect(newName).toBe(model.get('title'));
+
     });
-  });
-});
 
-describe("async", function() {
-  it("multiple async", function() {
-    var semaphore = 2;
+    it("Delete Movie", function(){
+      var prevTotal = _collection.length;
 
-    setTimeout(function() {
-      expect(true).toBeTruthy();
-      semaphore--;
-    }, 500);
+      app.router.deleteMovie(lastMovie.get('cod'));
 
-    setTimeout(function() {
-      expect(true).toBeTruthy();
-      semaphore--;
-    }, 500);
+      expect(prevTotal-1).toBe(_collection.length);
 
-    waitsFor(function() { return semaphore === 0 });
+    });
+
+    function getView(id){
+      return app.layout.getView(function(view) {
+          return view.id === id;
+      });
+    }
   });
 });

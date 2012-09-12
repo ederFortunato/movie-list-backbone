@@ -36,12 +36,11 @@
   <script>
     // Ensure you point to where your tests are, base directory is app/, which
     // is why ../test is necessary
-    require({ paths: { tests: "../test/qunit/tests" } }, [
+    QUnit.config.autostart = false;
+    require(["../test/qunit/tests/example"], function(example){
+      QUnit.start(); //Tests loaded, run tests
+    });
 
-      // Load the example tests, replace this and add your own tests
-      "tests/example"
-
-    ]);
   </script>
 </body>
 </html>

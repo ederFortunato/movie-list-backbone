@@ -1,54 +1,62 @@
-test("one tautology", function() {
-  ok(true);
-});
+define(['../../../app/app', '../../../app/Crud'], function() {
 
-module("simple tests");
+  var app = require("app"),
+    lastMovie,
+    _collection,
+    formView;
 
-test("increments", function() {
-  var mike = 0;
+  module("Tests for Movie List Backbone", {
+    setup: function() {
+      _collection = app.router._collection;
+      formView = getView('form-view');
 
-  ok(mike++ === 0);
-  ok(mike === 1);
-});
+      if(_collection.models.length > 0){
+        lastMovie = _collection.models[_collection.models.length-1];
+      }
 
-test("increments (improved)", function() {
-  var mike = 0;
+      //prevent change URL
+      app.router.navigate = function(){};
+    }
+  });
 
-  equal(mike++, 0);
-  equal(mike, 1);
-});
+  test("Add Movie", function(){
+    var prevTotal = _collection.length;
 
+    formView.$el.find('#txtTitle').val('movie test');
+    formView.confirmSave();
 
-module("setUp/tearDown", {
-  setup: function() {
-    //console.log("Before");
-  },
+    equals(prevTotal+1, _collection.length, 'num itens before:'+prevTotal+', after:'+_collection.length);
 
-  teardown: function() {
-    //console.log("After");
+  });
+
+  test("Edit Movie", function(){
+    var newName = 'movie 2',
+      oldName = lastMovie.get('title'),
+      model;
+
+    app.router.editMovie(lastMovie.get('cod'));
+    formView.$el.find('#txtTitle').val(newName);
+    formView.confirmSave();
+
+    model = _collection.where({cod: lastMovie.get('cod')})[0];
+
+    equals(newName, model.get('title'), 'old title: "'+oldName+'", new title: "'+newName+'"');
+
+  });
+
+  test("Delete Movie", function(){
+    var prevTotal = _collection.length;
+
+    app.router.deleteMovie(lastMovie.get('cod'));
+
+    equals(prevTotal-1, _collection.length, 'num itens before:'+prevTotal+', after:'+_collection.length);
+
+  });
+
+  function getView(id){
+    return app.layout.getView(function(view) {
+          return view.id === id;
+    });
   }
-});
 
-test("example", function() {
-  //console.log("During");
-});
-
-module("async");
-
-test("multiple async", function() {
-  expect(2);
-
-  stop();
-
-  setTimeout( function( ) {
-    ok(true, "async operation completed");
-    start();
-  }, 500);
-
-  stop();
-
-  setTimeout(function() {
-    ok(true, "async operation completed");
-    start();
-  }, 500);
 });

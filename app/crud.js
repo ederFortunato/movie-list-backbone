@@ -57,7 +57,7 @@ function (app, Backbone) {
     },
 
     openForm: function () {
-      $('#fooom').modal('show');
+      this.$el.find('#form-edit').modal('show');
     },
 
     closeForm: function () {
@@ -70,7 +70,7 @@ function (app, Backbone) {
       app.router.navigate('/');
 
       this.currentItem.set({
-        title: $('#txtTitle').val()
+        title: this.$el.find('#txtTitle').val()
       });
 
       if (!this.currentItem.get('cod')) {
